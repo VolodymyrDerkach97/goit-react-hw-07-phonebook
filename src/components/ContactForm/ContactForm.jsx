@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Form, InputWraper, Input, Button } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,13 +69,3 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
-
-ContactForm.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-};
