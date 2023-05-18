@@ -6,9 +6,7 @@ const Contacts = ({ contacts }) => {
     <>
       <ul>
         {contacts.length !== 0 ? (
-          contacts.map(({ name, id, number }) => (
-            <ContactsItem key={id} name={name} id={id} number={number} />
-          ))
+          contacts.map(props => <ContactsItem key={props.id} {...props} />)
         ) : (
           <li>No contacts found</li>
         )}
@@ -23,8 +21,9 @@ Contacts.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.exact({
       id: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
     })
   ),
 };

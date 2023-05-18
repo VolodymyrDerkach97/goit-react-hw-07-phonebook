@@ -1,21 +1,36 @@
 import Contacts from '../Contacts';
 import ContactForm from '../ContactForm';
 import Filter from '../Filter';
-import { Container } from './App.styled';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getContacts, getFilter } from 'redux/selectors';
+import { selectContacts, selectFilter } from 'redux/selectors';
+
+import { useEffect } from 'react';
+import { fetchContacts } from 'redux/operations';
+
+import { Container } from './App.styled';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const filterContacts = () => {
     const normalaizeContacts = filter.toLowerCase();
+    const sort = [...contacts]
+      .sort((a, b) => b - a)
+      .filter(contact =>
+        contact.name.toLowerCase().includes(normalaizeContacts)
+      );
 
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalaizeContacts)
-    );
+    return sort;
   };
 
   return (
@@ -24,8 +39,11 @@ export const App = () => {
       <ContactForm />
 
       <h2>Contacts</h2>
+      <p>Contacts in the phone book: {contacts.length} </p>
       <Filter />
       <Contacts contacts={filterContacts()} />
+
+      <ToastContainer autoClose={2000} />
     </Container>
   );
 };

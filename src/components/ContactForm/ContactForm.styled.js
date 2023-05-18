@@ -15,7 +15,7 @@ export const InputWraper = styled.div`
 
 export const Input = styled(InputMask)`
   border: 3px solid #549668;
-
+  min-width: 200px;
   border-radius: 20px;
   padding: 5px;
 
@@ -26,10 +26,14 @@ export const Input = styled(InputMask)`
 
 export const Button = styled.button`
   /* text-align: center; */
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   min-width: 100px;
+  height: 40px;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px auto;
   border-radius: 20px;
   background-color: #78c4c8;
 `;

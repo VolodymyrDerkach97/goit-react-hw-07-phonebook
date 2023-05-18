@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
-import { Form, InputWraper, Input, Button } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactSlice';
-import { getContacts } from 'redux/selectors';
+
+import { selectContacts, selectIsLoading } from 'redux/selectors';
+import { addContact } from 'redux/operations';
+
+import { nanoid } from 'nanoid';
+
+import { Form, InputWraper, Input, Button } from './ContactForm.styled';
+import { toast } from 'react-toastify';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
 
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
 
   const dispatch = useDispatch();
 
@@ -17,19 +22,18 @@ const ContactForm = () => {
     e.preventDefault();
 
     if (contacts.find(contact => contact.name === name)) {
-      alert(`${name} is already in contacts`);
+      toast.error(`${name} is already in contacts`);
       return;
     }
-    const contactId = nanoid();
-
-    dispatch(addContact({ id: contactId, name, number }));
-
+    dispatch(addContact({ name, phone }));
     reset();
   };
+
   const reset = () => {
     setName('');
     setNumber('');
   };
+
   const nameInputId = nanoid();
   const telInputId = nanoid();
 
@@ -51,10 +55,10 @@ const ContactForm = () => {
       <InputWraper>
         <label htmlFor={telInputId}>Number</label>
         <Input
-          mask="999-99-99"
+          mask="999-999-9999"
           id={telInputId}
           type="tel"
-          value={number}
+          value={phone}
           onChange={({ target: { value } }) => setNumber(value)}
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -63,7 +67,9 @@ const ContactForm = () => {
         />
       </InputWraper>
 
-      <Button type="submit">Add contact</Button>
+      <Button type="submit" disabled={isLoading}>
+        Add contact
+      </Button>
     </Form>
   );
 };

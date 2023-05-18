@@ -1,17 +1,25 @@
-import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/';
+import { useDispatch, useSelector } from 'react-redux';
+// import { deleteContact } from '../../redux/';
 
-import { DeleteButton, Contact } from './ContactsItem.styled';
+import { DeleteButton, Contact, ContactWrapper } from './ContactsItem.styled';
+import { deleteContact } from 'redux/operations';
+import { selectIsLoading } from 'redux/selectors';
 
-const ContactsItem = ({ name, id, number }) => {
+const ContactsItem = ({ name, id, phone }) => {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
   return (
     <Contact>
-      {name}: {number}
+      <ContactWrapper>
+        {name}: <br />
+        {phone}
+      </ContactWrapper>
+
       <DeleteButton
         onClick={() => {
-          dispatch(deleteContact(id));
+          dispatch(deleteContact({ name, id }));
         }}
+        disabled={isLoading}
       >
         Delete
       </DeleteButton>

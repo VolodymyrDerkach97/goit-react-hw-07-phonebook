@@ -1,10 +1,10 @@
 import { Input } from '../ContactForm/ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilter } from 'redux/selectors';
+import { selectFilter } from 'redux/selectors';
 import { filterContact } from 'redux/filterSlice';
 
 const Filter = () => {
-  const value = useSelector(getFilter);
+  const value = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   return (
