@@ -24,13 +24,11 @@ export const App = () => {
 
   const filterContacts = () => {
     const normalaizeContacts = filter.toLowerCase();
-    const sort = [...contacts]
-      .sort((a, b) => b - a)
+    return [...contacts]
       .filter(contact =>
         contact.name.toLowerCase().includes(normalaizeContacts)
-      );
-
-    return sort;
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
   };
 
   return (
@@ -39,7 +37,7 @@ export const App = () => {
       <ContactForm />
 
       <h2>Contacts</h2>
-      <p>Contacts in the phone book: {contacts.length} </p>
+      <p>Total number of contacts: {contacts.length} </p>
       <Filter />
       <Contacts contacts={filterContacts()} />
 
